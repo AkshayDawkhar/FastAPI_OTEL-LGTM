@@ -1,7 +1,3 @@
-Here’s a clean, developer-friendly **README** you can use as a base template for future observability-enabled FastAPI microservices. It’s structured to explain purpose, setup, and how each component fits together — ideal for a reproducible stack.
-
----
-
 # 🧩 FastAPI Observability Project Template
 
 A full-stack template to bootstrap new **FastAPI microservices** with **OpenTelemetry**, **Grafana**, **Prometheus**, **Loki**, **Tempo**, and **PostgreSQL** — all containerized with **Docker Compose**.
