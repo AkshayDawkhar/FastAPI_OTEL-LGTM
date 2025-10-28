@@ -1,0 +1,18 @@
+[project]
+name = "base"
+version = "0.1.0"
+description = "Base service for the application"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi",
+    "psycopg2-binary",
+    "uvicorn",
+    "prometheus-client",
+    "opentelemetry-api>=1.38.0",
+    "opentelemetry-sdk>=1.38.0",
+    "opentelemetry-exporter-otlp>=1.38.0",
+    "opentelemetry-instrumentation-fastapi>=0.59b0",
+    "opentelemetry-instrumentation-requests>=0.59b0",
+    "opentelemetry-instrumentation-logging>=0.59b0",
+]

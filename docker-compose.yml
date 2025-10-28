@@ -1,0 +1,153 @@
+version: "3.8"
+
+services:
+  base:
+    image: pl-base:latest
+    build: services/base
+    expose:
+      - "8000"
+    environment:
+      - DATABASE_URL=postgresql://pl_user:pl_pass@db:5432/pl_db
+      - REPLICA_ID=${HOSTNAME}
+    develop:
+      watch:
+        - action: sync
+          path: ./services/base
+          target: /app
+
+    depends_on:
+      - db
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - pl_network
+
+  service_b:
+    image: pl-service-b:latest
+    build: services/service_b
+    environment:
+      - DATABASE_URL=postgresql://pl_user:pl_pass@db:5432/pl_db
+      - REPLICA_ID=${HOSTNAME}
+    depends_on:
+      - db
+    develop:
+      watch:
+        - action: sync
+          path: ./services/service_b
+          target: /app
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - pl_network
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - base
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - pl_network
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: pl_user
+      POSTGRES_PASSWORD: pl_pass
+      POSTGRES_DB: pl_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - pl_network
+
+  # ---------- Loki (Logs) ----------
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+    networks:
+      - pl_network
+
+  # ---------- Tempo (Traces) ----------
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    ports:
+      - "3200:3200"    # expose only query port for Grafana
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+    networks:
+      - pl_network
+
+  # ---------- Prometheus (Metrics) ----------
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-lifecycle"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - pl_network
+
+  # ---------- Grafana (Dashboards) ----------
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3000:3000"
+    depends_on:
+      - loki
+      - prometheus
+      - tempo
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - pl_network
+
+  # ---------- OpenTelemetry Collector ----------
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"   # OTLP gRPC receiver (for your apps)
+      - "4318:4318"   # OTLP HTTP receiver (for your apps)
+      - "9464:9464"   # Prometheus metrics endpoint
+    depends_on:
+      - prometheus
+      - loki
+      - tempo
+    networks:
+      - pl_network
+
+networks:
+  pl_network:
+
+volumes:
+  db_data:
+  prometheus_data:
+  grafana_data:
+

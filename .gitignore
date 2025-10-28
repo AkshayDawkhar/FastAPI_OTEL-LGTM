@@ -1,0 +1,75 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+*.venv
+
+# Environment variables
+.env
+.env.dashboard
+*.env
+
+# Logs
+logs/
+log/
+*.log
+
+# Ignore all migration files
+alembic/versions/*.py
+
+# But keep the .gitkeep file
+!api_service/alembic/versions/.gitkeep
+
+# Database files
+*.sqlite3
+*.db
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Python dependency cache
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Pytest cache
+.cache/
+pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Local development files
+local_settings.py
+instance/
+# Ignore environment variables
+../.env
+
+
+#firebase
+../Barva/firebase_creds.json
+api_service/utils/firebase_creds.json
+firebase_creds.json
+
+#creds dir
+credsp
+
+#ssl
+*.pem
+*.key
