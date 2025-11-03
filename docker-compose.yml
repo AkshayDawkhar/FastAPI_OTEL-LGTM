@@ -78,7 +78,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki-config.yaml:/etc/loki/local-config.yaml
+      - ./observability/loki-config.yaml:/etc/loki/local-config.yaml
     networks:
       - pl_network
 
@@ -89,7 +89,7 @@ services:
     ports:
       - "3200:3200"    # expose only query port for Grafana
     volumes:
-      - ./tempo.yaml:/etc/tempo.yaml
+      - ./observability/tempo.yaml:/etc/tempo.yaml
     networks:
       - pl_network
 
@@ -101,7 +101,7 @@ services:
       - "--storage.tsdb.path=/prometheus"
       - "--web.enable-lifecycle"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
@@ -131,7 +131,7 @@ services:
     image: otel/opentelemetry-collector-contrib:latest
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
-      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - ./observability/otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
       - "4317:4317"   # OTLP gRPC receiver (for your apps)
       - "4318:4318"   # OTLP HTTP receiver (for your apps)
