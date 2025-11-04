@@ -123,6 +123,8 @@ services:
       - tempo
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning
+      - ./observability/grafana/dashboards:/etc/grafana/dashboards
     networks:
       - pl_network
 
