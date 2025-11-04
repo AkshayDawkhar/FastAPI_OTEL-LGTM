@@ -37,7 +37,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "af1we43ru9ybkc"
+        "uid": "prometheus_ds"
       },
       "fieldConfig": {
         "defaults": {
@@ -140,7 +140,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "af1we43ru9ybkc"
+        "uid": "prometheus_ds"
       },
       "fieldConfig": {
         "defaults": {
@@ -238,7 +238,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "af1we43ru9ybkc"
+        "uid": "prometheus_ds"
       },
       "fieldConfig": {
         "defaults": {
@@ -370,7 +370,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "af1we43ru9ybkc"
+        "uid": "prometheus_ds"
       },
       "fieldConfig": {
         "defaults": {
@@ -486,7 +486,7 @@
     {
       "datasource": {
         "type": "tempo",
-        "uid": "af1we657qaxvkb"
+        "uid": "tempo_ds"
       },
       "fieldConfig": {
         "defaults": {
@@ -564,22 +564,13 @@
         {
           "datasource": {
             "type": "tempo",
-            "uid": "af1we657qaxvkb"
+            "uid": "tempo_ds"
           },
           "filters": [
             {
-              "id": "49bfbd0b",
+              "id": "39546d15",
               "operator": "=",
               "scope": "span"
-            },
-            {
-              "id": "service-name",
-              "isCustomValue": false,
-              "operator": "=",
-              "scope": "resource",
-              "tag": "service.name",
-              "value": [],
-              "valueType": "string"
             },
             {
               "id": "status",
@@ -604,7 +595,7 @@
     {
       "datasource": {
         "type": "tempo",
-        "uid": "af1we657qaxvkb"
+        "uid": "tempo_ds"
       },
       "fieldConfig": {
         "defaults": {
@@ -656,11 +647,11 @@
         {
           "datasource": {
             "type": "tempo",
-            "uid": "af1we657qaxvkb"
+            "uid": "tempo_ds"
           },
           "filters": [
             {
-              "id": "7e0d6fdd",
+              "id": "61defc1f",
               "operator": "=",
               "scope": "span"
             }
@@ -691,7 +682,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "ef1we4tjm29s0a"
+        "uid": "loki_ds"
       },
       "fieldConfig": {
         "defaults": {},
@@ -720,11 +711,11 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "ef1we4tjm29s0a"
+            "uid": "loki_ds"
           },
           "direction": "backward",
-          "editorMode": "builder",
-          "expr": "{service_name=\"service_b\"} |= ``",
+          "editorMode": "code",
+          "expr": "{service_name=\"base\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -747,5 +738,5 @@
   "timezone": "browser",
   "title": "Dashboard 1",
   "uid": "ac901487-6e44-47d6-99b9-55c445861b3f",
-  "version": 43
+  "version": 1
 }
