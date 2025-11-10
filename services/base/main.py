@@ -2,6 +2,7 @@ import os
 import time
 import logging
 from random import randint
+import uvicorn
 
 import requests
 from fastapi import FastAPI, Request
@@ -90,3 +91,7 @@ def external_call():
         span.set_attribute("external.status_code", resp.status_code)
         logger.info(f"Called Service B, status_code={resp.status_code}")
         return {"external_status": resp.status_code}
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)

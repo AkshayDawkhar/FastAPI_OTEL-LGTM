@@ -21,7 +21,7 @@ RUN uv sync --frozen --no-dev
 EXPOSE 8000
 
 # Run the app
-CMD ["uv", "run", "uvicorn", "main:app","--port", "8000","--host","0.0.0.0"]
+CMD ["uv", "run", "main.py"]
 
 # Metadata:
 LABEL maintainer="Akshay"

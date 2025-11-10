@@ -2,6 +2,7 @@ import os
 import time
 import logging
 from random import randint
+import uvicorn
 
 from fastapi import FastAPI, Request
 from starlette.responses import Response
@@ -77,3 +78,7 @@ def work():
         time.sleep(work_time)
         logger.info(f"Service B completed work in {work_time:.3f}s")
         return {"status": "work completed", "duration": work_time}
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)
